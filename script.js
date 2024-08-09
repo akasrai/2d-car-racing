@@ -1,4 +1,3 @@
-let playGame = true;
 const $gameFrame = document.getElementById("frame");
 
 const car = {
@@ -9,6 +8,7 @@ const car = {
 
 const $car = document.createElement("div");
 
+// $car.style.backgroundColor = "brown";
 $car.style.width = "80px";
 $car.style.height = "138px";
 $car.style.position = "absolute";
@@ -21,7 +21,7 @@ $gameFrame.appendChild($car);
 
 function moveLeft() {
   if (car.x >= car.speed) {
-    car.x += car.speed * -1;
+    car.x -= car.speed;
     $car.style.left = car.x + "px";
   }
 }
@@ -72,6 +72,7 @@ function createIncomingCar(gap) {
 
   const $incomingCar = document.createElement("div");
 
+  //   $incomingCar.style.backgroundColor = "white";
   $incomingCar.style.width = "68px";
   $incomingCar.style.height = "138px";
   $incomingCar.style.position = "absolute";
@@ -87,16 +88,14 @@ function createIncomingCar(gap) {
   incomingCars.push($incomingCar);
 }
 
-const bg = {
-  scrollX: 1,
-  speed: 3,
-};
+let bgScrollY = 1;
 
 function updateBGPosition() {
-  bg.scrollX += 6;
-  $gameFrame.style.backgroundPosition = "100% " + bg.scrollX + "px";
+  bgScrollY += 6;
+  $gameFrame.style.backgroundPosition = "100% " + bgScrollY + "px";
 }
 
+let playGame = true;
 let count = 70;
 let variation = 40;
 let positions = [40, 154, 268, 382];
@@ -140,13 +139,6 @@ function updateIncomingCarsPosition() {
 function distance(incomingCar) {
   let dx = incomingCar.properties.x - car.x;
   let dy = incomingCar.properties.y - car.y;
-
-  //   return (
-  //     car.x < incomingCar.x + 68 &&
-  //     car.x + 68 > incomingCar.x &&
-  //     car.y < incomingCar.y + 138 &&
-  //     car.y + 123 > incomingCar.y
-  //   );
 
   return Math.sqrt(dx * dx + dy * dy);
 }
