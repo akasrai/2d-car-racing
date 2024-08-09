@@ -2,12 +2,13 @@ let playGame = true;
 const $gameFrame = document.getElementById("frame");
 
 const car = {
-  x: 210,
-  y: screen.availHeight - 240,
+  x: 154,
+  y: 300,
   speed: 30,
 };
 
 const $car = document.createElement("div");
+
 $car.style.width = "80px";
 $car.style.height = "138px";
 $car.style.position = "absolute";
@@ -32,25 +33,9 @@ function moveRight() {
   }
 }
 
-function moveUp() {
-  if (car.y >= car.speed) {
-    car.y += car.speed * -1;
-    $car.style.top = car.y + "px";
-  }
-}
-
-function moveDown() {
-  if (car.y <= screen.availHeight - 200) {
-    car.y += car.speed;
-    $car.style.top = car.y + "px";
-  }
-}
-
 function moveCar(keyCodeNumber) {
   const LEFT = 37,
-    UP = 38,
-    RIGHT = 39,
-    DOWN = 40;
+    RIGHT = 39;
 
   switch (keyCodeNumber) {
     case LEFT:
@@ -58,13 +43,6 @@ function moveCar(keyCodeNumber) {
       break;
     case RIGHT:
       moveRight();
-      break;
-    case UP:
-      moveUp();
-      break;
-
-    case DOWN:
-      moveDown();
       break;
 
     default:
@@ -88,7 +66,7 @@ const incomingCars = [];
 function createIncomingCar(gap) {
   const properties = {
     x: gap,
-    y: -200,
+    y: screen.availHeight + 240,
     speed: 6,
   };
 
@@ -97,7 +75,7 @@ function createIncomingCar(gap) {
   $incomingCar.style.width = "68px";
   $incomingCar.style.height = "138px";
   $incomingCar.style.position = "absolute";
-  $incomingCar.style.top = properties.y + "px";
+  $incomingCar.style.bottom = properties.y + "px";
   $incomingCar.style.left = properties.x + "px";
 
   $incomingCar.style.backgroundImage = "url('./image/incoming-car-1.png')";
@@ -109,12 +87,23 @@ function createIncomingCar(gap) {
   incomingCars.push($incomingCar);
 }
 
+const bg = {
+  scrollX: 1,
+  speed: 3,
+};
+
+function updateBGPosition() {
+  bg.scrollX += 6;
+  $gameFrame.style.backgroundPosition = "100% " + bg.scrollX + "px";
+}
+
 let count = 70;
 let variation = 40;
 let positions = [40, 154, 268, 382];
 
 function animate() {
   updateIncomingCarsPosition();
+  updateBGPosition();
 
   if (count === 70) {
     count = 0;
@@ -136,9 +125,9 @@ animate();
 
 function updateIncomingCarsPosition() {
   incomingCars.forEach(($car, i) => {
-    $car.properties.y += $car.properties.speed;
+    $car.properties.y -= $car.properties.speed;
 
-    if ($car.properties.y >= screen.availHeight) {
+    if ($car.properties.y <= -200) {
       incomingCars.splice(i, 1);
       $gameFrame.removeChild($car);
     } else {
@@ -148,9 +137,16 @@ function updateIncomingCarsPosition() {
   });
 }
 
-function distance($incomingCar) {
-  let dx = $incomingCar.properties.x - car.x;
-  let dy = $incomingCar.properties.y - car.y;
+function distance(incomingCar) {
+  let dx = incomingCar.properties.x - car.x;
+  let dy = incomingCar.properties.y - car.y;
+
+  //   return (
+  //     car.x < incomingCar.x + 68 &&
+  //     car.x + 68 > incomingCar.x &&
+  //     car.y < incomingCar.y + 138 &&
+  //     car.y + 123 > incomingCar.y
+  //   );
 
   return Math.sqrt(dx * dx + dy * dy);
 }
