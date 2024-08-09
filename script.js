@@ -156,8 +156,6 @@ function distance($incomingCar) {
 }
 
 function checkCollision($incomingCar) {
-  console.log(distance($incomingCar));
-
   if (distance($incomingCar) < 69) {
     playGame = false;
     showGameOver($incomingCar);
