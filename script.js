@@ -160,11 +160,11 @@ function checkCollision($incomingCar) {
 
   if (distance($incomingCar) < 69) {
     playGame = false;
-    showGameOver();
+    showGameOver($incomingCar);
   }
 }
 
-function showGameOver() {
+function showGameOver($incomingCar) {
   const $gameOver = document.createElement("h1");
   $gameOver.style.position = "absolute";
   $gameOver.style.top = "50%";
@@ -173,6 +173,8 @@ function showGameOver() {
   $gameOver.style.fontSize = "40px";
   $gameOver.style.color = "white";
   $gameOver.innerHTML = "GAME OVER";
+  $incomingCar.style.backgroundImage = "url('./image/incoming-car-blast.png')";
+  $car.style.backgroundImage = "url('./image/green-blast.png')";
 
   $gameFrame.appendChild($gameOver);
 }
